@@ -1,0 +1,77 @@
+def generate_html_graph(moves):
+    # Create the HTML header
+    html = """
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Chess Moves Graph</title>
+      <style>
+        .grid-container {
+          display: grid;
+          grid-template-columns: repeat({}, 1fr);
+          grid-gap: 10px;
+          padding: 10px;
+        }
+        .grid-item {
+          text-align: center;
+          padding: 20px;
+          font-size: 16px;
+        }
+        .white {
+          background-color: #f1f1f1;
+        }
+        .black {
+          background-color: #ddd;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="grid-container">
+    """.format(len(moves) + 1)
+
+    # Create the grid header row
+    html += """
+        <div class="grid-item">Move</div>
+    """
+    for move_num in range(1, len(moves) + 1):
+        html += """
+        <div class="grid-item">{}</div>
+        """.format(move_num)
+
+    # Create the grid rows for each chessman
+    chessmen = set(move[2] for move in moves)
+    for chessman in chessmen:
+        html += """
+        <div class="grid-item">{}</div>
+        """.format(chessman)
+        for move_num in range(1, len(moves) + 1):
+            move = next((m for m in moves if m[0] == move_num and m[2] == chessman), None)
+            if move:
+                color = 'white' if move[1] == 'White' else 'black'
+                html += """
+                <div class="grid-item {}">{}</div>
+                """.format(color, move[4])
+            else:
+                html += """
+                <div class="grid-item"></div>
+                """
+
+    # Close the HTML tags
+    html += """
+      </div>
+    </body>
+    </html>
+    """
+
+    return html
+
+# Example usage
+moves = [
+    (1, 'White', 'Pawn1', 'a2', 'a3'),
+    (2, 'Black', 'Pawn1', 'a7', 'a6'),
+    (3, 'White', 'Pawn2', 'b2', 'b3'),
+    (4, 'Black', 'Pawn1', 'a6', 'a5')
+]
+
+html_graph = generate_html_graph(moves)
+print(html_graph)
