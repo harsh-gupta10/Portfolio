@@ -50,8 +50,135 @@
               </ul>
   
                 <p>
-                Developed a Distributed File System from scratch in C using concurrency, and TCP protocols. It is a client-server model that spreads files over several servers but there is smart naming server (Middleman between client and storage servers). This is Scalable, and user-friendly, it’s a robust solution for data management.              
-                </p>
+<h1>Naming and Storage Servers</h1>
+<h2>1. Initialization</h2>
+<h3>Naming Server (NM)</h3>
+<ul>
+    <li>Set up to manage directory structures and file locations.</li>
+    <li><strong>Solution:</strong> Define a port for NM in <code>header.h</code>. NM listens on this port.</li>
+</ul>
+<h3>Storage Servers (SS_1 to SS_n)</h3>
+<h4>SS Initialization</h4>
+<ul>
+    <li><strong>SS_1 Initialization:</strong>
+        <ul>
+            <li>Provide NM with IP, client connection ports, and accessible paths.</li>
+            <li><strong>Solution:</strong> SS registers with NM, sending its IP, port, and directory details.</li>
+        </ul>
+    </li>
+    <li><strong>SS_2 to SS_n Initialization:</strong>
+        <ul>
+            <li>Follow the same procedure as SS_1.</li>
+        </ul>
+    </li>
+</ul>
+<h4>NM Client Requests</h4>
+<ul>
+    <li>Begin accepting client requests after all SS are initialized.</li>
+    <li><strong>Solution:</strong> Clients connect to NM with an ID to establish a connection.</li>
+</ul>
+<h2>2. On Storage Servers (SS)</h2>
+<h3>Adding New Storage Servers</h3>
+<ul>
+    <li>Dynamically add entries to NM.</li>
+    <li><strong>Solution:</strong> NM uses <code>SELECT</code> to accept new connections from SS and clients.</li>
+</ul>
+<h3>Commands Issued by NM</h3>
+<ul>
+    <li><strong>Create File/Directory:</strong> SS receives the path and command (CREATE or CREATE_D) and sends an ACK.</li>
+    <li><strong>Delete File/Directory:</strong> SS receives the path and command (DELETE) and sends an ACK.</li>
+    <li><strong>Copy Files:</strong>
+        <ul>
+            <li>One SS reads data, sends it to NM, which forwards it to another SS if needed. SS creates the file and sends an ACK.</li>
+        </ul>
+    </li>
+    <li><strong>Copy Directory:</strong>
+        <ul>
+            <li>SS sends paths to NM, NM instructs another SS to recreate the structure, and NM handles file copying. The receiving SS sends an ACK to NM and NM to the client.</li>
+        </ul>
+    </li>
+</ul>
+<h3>Client Interactions</h3>
+<ul>
+    <li><strong>Read a File:</strong> NM provides the client the SS's IP and port; the client requests the file from SS.</li>
+    <li><strong>Write to a File:</strong> NM provides the client the SS's IP and port; the client sends the data to SS to write.</li>
+    <li><strong>Get Size and Permissions:</strong> NM provides the SS's IP and port; the client requests info from SS.</li>
+</ul>
+<h2>3. On Naming Server (NM)</h2>
+<h3>Storing Storage Server Data</h3>
+<ul>
+    <li>Serve as the central repository for SS information and paths.</li>
+</ul>
+<h3>Client Task Feedback</h3>
+<ul>
+    <li>NM sends an ACK to clients upon task completion.</li>
+</ul>
+<h1>Clients</h1>
+<h2>Client-NM Communication</h2>
+<ul>
+    <li>Clients connect to NM with a unique ID and perform various commands.</li>
+</ul>
+<h2>Functionalities</h2>
+<h3>Read, Write, Retrieve Info</h3>
+<ul>
+    <li>NM searches cache/trie and provides SS details to the client for direct communication.</li>
+</ul>
+<h3>Create/Delete Files/Folders</h3>
+<ul>
+    <li>NM searches cache/trie, sends tasks to SS, receives ACK, and forwards to client.</li>
+</ul>
+<h3>Copy Files/Directories</h3>
+<ul>
+    <li>NM handles paths, communicates with SS for tasks, and manages copying, sending an ACK to the client.</li>
+</ul>
+<h1>Other Features</h1>
+<h2>Multiple Clients</h2>
+<h3>Concurrent Access</h3>
+<ul>
+    <li>Use <code>select</code> system call for handling multiple clients.</li>
+    <li>Clients can perform multiple operations, and new clients can connect anytime.</li>
+</ul>
+<h2>Error Codes</h2>
+<ul>
+    <li>Define and send clear error codes for various failures.</li>
+</ul>
+<pre><code>#define ERROR_READ 100
+#define ERROR_WRITE 101
+#define ERROR_CREATE 102
+#define ERROR_CREATE_D 103
+#define ERROR_DELETE 104
+#define ERROR_COPY 105
+#define ERROR_INFO 106</code></pre>
+<h2><strong>Redundancy/Replication</strong></h2>
+<h3><strong>Failure Detection</strong></h3>
+<ul>
+    <li>NM detects SS failures and logs them.</li>
+</ul>
+<h3><strong>Data Redundancy</strong></h3>
+<ul>
+    <li>Duplicate files and folders in two other SS to allow read operations during failures.</li>
+</ul>
+<h3><strong>SS Recovery</strong></h3>
+<ul>
+    <li>Restore original SS from duplicates, preventing new entries during recovery.</li>
+</ul>
+<h3><strong>Asynchronous Duplication</strong></h3>
+<ul>
+    <li>Write commands are duplicated asynchronously.</li>
+</ul>
+<h2><strong>Bookkeeping</strong></h2>
+<h3><strong>Logging</strong></h3>
+<ul>
+    <li>Record every request and acknowledgment with relevant details.</li>
+</ul>
+<h3><strong>Message Display</strong></h3>
+<ul>
+    <li>Display messages in NM and SS for operations.</li>
+</ul>
+<h3><strong>IP and Port Recording</strong></h3>
+<ul>
+    <li>Log IP addresses and ports for traceability.</li>
+</ul>                </p>
                 <!-- <p>
                 Coded Pub/Sub routine to fetch 1000 tweets at a time from Twitter; used Dataflow for resource autoscaling and dynamic work rebalancing, reducing overall response time by 50\%; stored data in BigQuery table for efficiently displaying data in Google DataStudio.
                 </p>

@@ -50,7 +50,90 @@
               </ul>
   
               <p>
-                Developed a custom shell in C based on BASH with support for multiple commands, involving system calls, signal handling, foreground/background processes, redirection, piping, networking routines, and process handling.              </p>
+                <h1>Custom Shell Project</h1>
+<h2>Description</h2>
+<p>Welcome to the Custom Shell project, Mini Project 1, where you will build your own shell. This shell implementation includes various features, system calls, and commands to provide a comprehensive user experience. Refer to <code>Problem_statement.html</code> for detailed requirements.</p>
+<h2>Features</h2>
+<h3>Part A: Basic System Calls</h3>
+<h4>Specification 1: Display Requirement</h4>
+<ul>
+    <li>The shell prompt displays the current user, system name, and working directory.</li>
+</ul>
+<h4>Specification 2: Input Requirements</h4>
+<ul>
+    <li>Supports <code>;</code> or <code>&</code> separated lists of commands, handling random spaces and tabs.</li>
+</ul>
+<h4>Specification 3: <code>warp</code></h4>
+<ul>
+    <li>Changes the shell's directory and updates the prompt.</li>
+    <li>Supports flags: <code>~</code>, <code>..</code>, <code>.</code>, and <code>-</code>.</li>
+</ul>
+<h4>Specification 4: <code>peek</code></h4>
+<ul>
+    <li>Lists files and directories with optional flags <code>-a</code> and <code>-l</code>.</li>
+    <li>Color-codes files, directories, and executables.</li>
+</ul>
+<h4>Specification 5: <code>pastevents</code> Commands</h4>
+<ul>
+    <li><code>pastevents</code>: Stores and outputs the 15 most recent commands, persisting across shell runs.</li>
+    <li><code>pastevents purge</code>: Clears all stored past events.</li>
+    <li><code>pastevents execute &lt;index&gt;</code>: Executes the command at the specified index in past events.</li>
+</ul>
+<h4>Specification 6: System Commands</h4>
+<ul>
+    <li>Executes system commands in both foreground and background processes, providing process information upon completion.</li>
+</ul>
+<h4>Specification 7: <code>proclore</code></h4>
+<ul>
+    <li>Obtains information about a process, with an optional PID argument.</li>
+</ul>
+<h4>Specification 8: <code>seek</code></h4>
+<ul>
+    <li>Searches for files/directories in a specified target directory.</li>
+    <li>Supports flags: <code>-d</code>, <code>-f</code>, and <code>-e</code>.</li>
+</ul>
+<h3>Part B: Processes, Files, and Miscellaneous</h3>
+<h4>Specification 9: I/O Redirection</h4>
+<ul>
+    <li>Supports input/output redirection with <code>&gt;</code>, <code>&gt;&gt;</code>, and <code>&lt;</code>.</li>
+</ul>
+<h4>Specification 10: Pipes</h4>
+<ul>
+    <li>Supports any number of pipes between commands.</li>
+</ul>
+<h4>Specification 11: Redirection along with Pipes</h4>
+<ul>
+    <li>Handles I/O redirection in conjunction with pipes.</li>
+</ul>
+<h4>Specification 12: <code>activities</code></h4>
+<ul>
+    <li>Lists all running processes spawned by the shell with relevant information.</li>
+</ul>
+<h4>Specification 13: Signals</h4>
+<ul>
+    <li>Implements <code>ping</code> command to send signals to processes, including <code>Ctrl-C</code>, <code>Ctrl-D</code>, and <code>Ctrl-Z</code>.</li>
+</ul>
+<h4>Specification 14: <code>fg</code> and <code>bg</code></h4>
+<ul>
+    <li><code>fg &lt;pid&gt;</code>: Brings a background process to the foreground.</li>
+    <li><code>bg &lt;pid&gt;</code>: Changes the state of a stopped background process to running.</li>
+</ul>
+<h4>Specification 15: <code>Neonate</code></h4>
+<ul>
+    <li>Prints the Process-ID of the most recently created process until the key 'x' is pressed.</li>
+</ul>
+<h3>Part C: Networking</h3>
+<h4>Specification 16: <code>iMan</code></h4>
+<ul>
+    <li>Fetches man pages from <code>http://man.he.net/</code> using sockets and outputs them to the terminal.</li>
+</ul>
+<h2>Usage</h2>
+<ul>
+    <li>Clone the repository.</li>
+    <li>Compile the shell using the provided makefile or build instructions.</li>
+    <li>Run the shell executable to start using the custom shell.</li>
+</ul>
+<p>For detailed usage of each command and further information, please refer to the <code>Problem_statement.html</code> and in-shell help commands.</p>             </p>
               </p>
               <!-- <p>
                 Deployed image recognition system on AWS for the clients to access and successfully tested the application by generating 1000 requests.            
